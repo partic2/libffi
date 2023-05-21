@@ -136,17 +136,7 @@ check_function_exists (mmap HAVE_MMAP)
 
 check_symbol_exists (MAP_ANON sys/mman.h HAVE_MMAP_ANON)
 
-check_c_source_runs(
-    "
-    #include <stdlib.h>
-    #include <sys/types.h>
-    #include <sys/mman.h>
-    #include <fcntl.h>
-
-    int main(void) {
-        int devzero = open(\"/dev/zero\", O_RDWR);
-        return devzero == -1 || mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_SHARED, devzero, 0) == (void *)-1 ? 1 : 0;
-    }" HAVE_MMAP_DEV_ZERO)
+set(HAVE_MMAP_DEV_ZERO OFF)
 
 check_include_file(alloca.h HAVE_ALLOCA_H)
 

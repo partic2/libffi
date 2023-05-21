@@ -30,6 +30,10 @@ set_property(TARGET objlib PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 add_library(ffi_static STATIC $<TARGET_OBJECTS:objlib>)
 
+target_include_directories(
+  ffi_static PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>")
+
 if(MSVC)
     add_definitions(-DFFI_BUILDING_DLL)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -37,6 +41,10 @@ elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
     set(CMAKE_MACOSX_RPATH 1)
 endif()
 add_library(ffi_shared SHARED $<TARGET_OBJECTS:objlib> ${OBJECTS_LIST})
+
+target_include_directories(
+  ffi_shared PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>")
 
 set_target_properties(ffi_static PROPERTIES OUTPUT_NAME ffi)
 set_target_properties(ffi_shared PROPERTIES OUTPUT_NAME ffi)
